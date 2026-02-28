@@ -10,15 +10,9 @@ export async function POST() {
     
     // Add nationaliteit column if it doesn't exist
     try {
-      await sql`
-        ALTER TABLE members 
-        ADD COLUMN IF NOT EXISTS nationaliteit VARCHAR(100)
-      `;
+      await sql`ALTER TABLE members ADD COLUMN IF NOT EXISTS nationaliteit VARCHAR(100)`;
       
-      await sql`
-        ALTER TABLE members 
-        ADD COLUMN IF NOT EXISTS geboorteplaats VARCHAR(255)
-      `;
+      await sql`ALTER TABLE members ADD COLUMN IF NOT EXISTS geboorteplaats VARCHAR(255)`;
       
       return Response.json({
         success: true,
