@@ -123,7 +123,9 @@ const apiStore = create((set, get) => ({
         }));
       }
     } catch (error) {
-      console.error('Failed to delete member:', error);
+      console.error('Delete member error:', error);
+      set({ loading: false, error: 'Failed to delete member' });
+      throw error;
     }
   },
 
@@ -132,30 +134,34 @@ const apiStore = create((set, get) => ({
   
   fetchPayments: async () => {
     try {
-      const response = await fetch(`${API_BASE}/payments`);
-      if (response.ok) {
-        const payments = await response.json();
-        set({ payments });
-      }
+      const response = await fetch('/api/data/payments');
+      if (!response.ok) throw new Error('Failed to fetch payments');
+      const payments = await response.json();
+      set({ payments, loading: false });
     } catch (error) {
-      console.error('Failed to fetch payments:', error);
+      console.error('Fetch payments error:', error);
+      set({ payments: [], loading: false, error: 'Failed to fetch payments' });
     }
   },
-  
+
   addPayment: async (paymentData) => {
     try {
-      const response = await fetch(`${API_BASE}/payments`, {
+      const response = await fetch('/api/data/payments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentData)
       });
-      
-      if (response.ok) {
-        const newPayment = await response.json();
-        set(state => ({ payments: [...state.payments, newPayment] }));
-      }
+      if (!response.ok) throw new Error('Failed to add payment');
+      const newPayment = await response.json();
+      set(state => ({
+        payments: [newPayment, ...state.payments],
+        loading: false
+      }));
+      return newPayment;
     } catch (error) {
-      console.error('Failed to add payment:', error);
+      console.error('Add payment error:', error);
+      set({ loading: false, error: 'Failed to add payment' });
+      throw error;
     }
   },
 
