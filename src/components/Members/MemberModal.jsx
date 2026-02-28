@@ -27,6 +27,14 @@ export default function MemberModal({ member, onClose, onSave }) {
   const [form, setForm] = useState(member ? { ...member } : { ...initialForm });
   const [errors, setErrors] = useState({});
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   useEffect(() => {
     setForm(f => ({
       ...f,
@@ -58,13 +66,13 @@ export default function MemberModal({ member, onClose, onSave }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(13,27,42,0.6)', backdropFilter: 'blur(4px)' }}
+      className="fixed inset-0 z-[9999] flex items-start justify-center pt-8 p-4"
+      style={{ background: 'rgba(13,27,42,0.6)', backdropFilter: 'blur(4px)', overflowY: 'auto' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
-        className="w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden"
-        style={{ background: 'white', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
+        className="w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden my-4"
+        style={{ background: 'white', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
       >
         {/* Header */}
         <div

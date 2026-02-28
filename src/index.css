@@ -48,6 +48,20 @@ body {
   min-height: 100vh;
 }
 
+/* Modal fixes */
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: #eef4f9; }
 ::-webkit-scrollbar-thumb { background: #7094b3; border-radius: 99px; }
