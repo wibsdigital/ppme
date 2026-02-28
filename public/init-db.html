@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initialize PPME Database</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0d1b2a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #1a2332;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            color: #c8933a;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        button {
+            background: #c8933a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-bottom: 1rem;
+        }
+        button:hover {
+            background: #daa85a;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .result {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #4ade80;
+        }
+        .error {
+            color: #f87171;
+        }
+        .info {
+            color: #60a5fa;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+        .warning {
+            background: rgba(202, 147, 58, 0.2);
+            border: 1px solid rgba(202, 147, 58, 0.4);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Initialize PPME Database</h1>
+        
+        <div class="warning">
+            <strong>⚠️ Manual Setup Required</strong><br>
+            Due to Vercel limitations, please follow these steps to set up your database:
+        </div>
+        
+        <div class="info">
+            <strong>Step 1:</strong> Go to your Vercel dashboard<br>
+            <strong>Step 2:</strong> Navigate to your database<br>
+            <strong>Step 3:</strong> Use the database console to run these SQL commands:
+        </div>
+        
+        <div class="result" style="display: block; max-height: 500px;">
+-- Create users table
+CREATE TABLE IF NOT EXISTS users (
+    id VARCHAR(255) PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'Admin',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create settings table
+CREATE TABLE IF NOT EXISTS settings (
+    id VARCHAR(255) PRIMARY KEY DEFAULT 'default',
+    organization_name VARCHAR(255) DEFAULT 'PPME Al Ikhlash Amsterdam',
+    contribution_married DECIMAL(10,2) DEFAULT 20.00,
+    contribution_single DECIMAL(10,2) DEFAULT 10.00,
+    currency VARCHAR(10) DEFAULT 'EUR',
+    default_payment_method VARCHAR(100) DEFAULT 'Bank Transfer',
+    language VARCHAR(10) DEFAULT 'nl',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create members table
+CREATE TABLE IF NOT EXISTS members (
+    id VARCHAR(255) PRIMARY KEY,
+    naam VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    telefoon VARCHAR(50),
+    adres TEXT,
+    burgerlijke_staat VARCHAR(50),
+    contributietarief DECIMAL(10,2) DEFAULT 10.00,
+    betaal_methode VARCHAR(50) DEFAULT 'Bank Transfer',
+    registratie_datum DATE DEFAULT CURRENT_DATE,
+    status VARCHAR(50) DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create payments table
+CREATE TABLE IF NOT EXISTS payments (
+    id VARCHAR(255) PRIMARY KEY,
+    member_id VARCHAR(255) REFERENCES members(id) ON DELETE CASCADE,
+    month INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    amount_due DECIMAL(10,2) NOT NULL,
+    amount_paid DECIMAL(10,2) DEFAULT 0.00,
+    payment_date DATE,
+    payment_method VARCHAR(100),
+    reference_note TEXT,
+    status VARCHAR(50) DEFAULT 'Unpaid',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(member_id, month, year)
+);
+
+-- Insert admin users
+INSERT INTO users (id, username, password_hash, name, role) 
+VALUES 
+    ('admin_1', 'admin', 'ppme2024', 'Administrator', 'Admin'),
+    ('treasurer_1', 'penningmeester', 'ppme2024', 'Penningmeester', 'Treasurer')
+ON CONFLICT (username) DO NOTHING;
+
+-- Insert default settings
+INSERT INTO settings (id, organization_name, contribution_married, contribution_single, currency, default_payment_method, language)
+VALUES ('default', 'PPME Al Ikhlash Amsterdam', 20.00, 10.00, 'EUR', 'Bank Transfer', 'nl')
+ON CONFLICT (id) DO UPDATE SET
+    organization_name = EXCLUDED.organization_name,
+    contribution_married = EXCLUDED.contribution_married,
+    contribution_single = EXCLUDED.contribution_single,
+    currency = EXCLUDED.currency,
+    default_payment_method = EXCLUDED.default_payment_method,
+    language = EXCLUDED.language;
+        </div>
+        
+        <div class="info">
+            <strong>Step 4:</strong> After running the SQL, go to your main app:<br>
+            <a href="/" style="color: #c8933a;">https://ppme-pi.vercel.app</a><br><br>
+            Login with: <strong>admin</strong> / <strong>ppme2024</strong>
+        </div>
+    </div>
+</body>
+</html>
