@@ -4,8 +4,8 @@ import { MEMBER_TYPES, CIVIL_STATUS, PAYMENT_METHODS, CONTRIBUTION_RATES } from 
 
 const initialForm = {
   voornamen: '', tussenvoegsel: '', achternaam: '', lidnummer: '',
-  membertype: 'Lid', burgerlijke_staat: 'Single', betaal_methode: 'Bank Transfer',
-  adres: '', postcode: '', woonplaats: '', geboortedatum: '', geboorteplaats: '',
+  lidtype: 'Lid', burgerlijke_staat: 'Single', betaal_methode: 'Bank Transfer',
+  adres: '', postcode: '', woonplaats: '', nationaliteit: '', geboortedatum: '', geboorteplaats: '',
   email: '', telefoonnummer: '', status: 'Active',
 };
 
@@ -267,16 +267,15 @@ export default function MemberModal({ member, onClose, onSave }) {
                   onBlur={e => e.target.style.borderColor = '#e8e3d8'}
                 />
               </Field>
-              <Field label="Status">
-                <select
+              <Field label="Nationaliteit">
+                <input
                   className={inputCls}
                   style={inputStyle}
-                  value={form.status}
-                  onChange={e => set('status', e.target.value)}
-                >
-                  <option>Active</option>
-                  <option>Inactive</option>
-                </select>
+                  value={form.nationaliteit}
+                  onChange={e => set('nationaliteit', e.target.value)}
+                  onFocus={e => e.target.style.borderColor = '#c8933a'}
+                  onBlur={e => e.target.style.borderColor = '#e8e3d8'}
+                />
               </Field>
             </div>
 
