@@ -26,6 +26,11 @@ export default function App() {
   const fetchMembers    = apiStore(s => s.fetchMembers);
   const fetchPayments   = apiStore(s => s.fetchPayments);
 
+  // Allow access to initdb page without authentication
+  if (currentPage === 'initdb') {
+    return <InitDbPage />;
+  }
+
   // Fetch data when authenticated
   useEffect(() => {
     if (isAuthenticated) {
