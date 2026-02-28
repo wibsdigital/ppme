@@ -80,19 +80,18 @@ export default function MemberModal({ member, onClose, onSave }) {
             </p>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-1.5 rounded transition-colors"
-            style={{ background: 'transparent', border: 'none', color: '#7c7870', cursor: 'pointer' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#e8e3d8'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            className="p-1 rounded hover:bg-gray-100 transition-colors"
+            style={{ cursor: 'pointer' }}
           >
-            <X size={18} />
+            <X size={20} style={{ color: '#5c5852' }} />
           </button>
         </div>
 
-        {/* Body */}
-        <form onSubmit={handleSubmit} className="overflow-y-auto flex-1">
-          <div className="p-6 space-y-5">
+        {/* Form - Scrollable */}
+        <div className="overflow-y-auto" style={{ flex: 1, minHeight: 0 }}>
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {/* Name row */}
             <div className="grid grid-cols-3 gap-3">
               <div className="col-span-1">
@@ -283,8 +282,8 @@ export default function MemberModal({ member, onClose, onSave }) {
                 />
               </Field>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
 
         {/* Footer */}
         <div
@@ -302,13 +301,14 @@ export default function MemberModal({ member, onClose, onSave }) {
             Annuleren
           </button>
           <button
+            type="submit"
             onClick={handleSubmit}
-            className="px-5 py-2 rounded text-sm font-medium transition-colors"
-            style={{ background: '#0d1b2a', color: 'white', border: 'none', cursor: 'pointer' }}
-            onMouseEnter={e => e.currentTarget.style.background = '#132233'}
-            onMouseLeave={e => e.currentTarget.style.background = '#0d1b2a'}
+            className="px-4 py-2 rounded text-sm transition-colors"
+            style={{ background: '#c8933a', color: 'white', border: 'none', cursor: 'pointer' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#daa85a'}
+            onMouseLeave={e => e.currentTarget.style.background = '#c8933a'}
           >
-            {member ? 'Opslaan' : 'Lid toevoegen'}
+            {member ? 'Bijwerken' : 'Toevoegen'}
           </button>
         </div>
       </div>
