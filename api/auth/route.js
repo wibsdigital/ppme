@@ -4,33 +4,37 @@ export async function POST(request) {
   try {
     const { username, password } = await request.json();
     
-    // Simple authentication (in production, use proper password hashing)
-    const users = await sql`
-      SELECT * FROM users WHERE username = ${username}
-    `;
-    
-    if (users.length === 0) {
-      return Response.json({ error: 'Invalid credentials' }, { status: 401 });
+    // Check if username and password are provided
+    if (!username || !password) {
+      return Response.json({ error: 'Username and password required' }, { status: 400 });
     }
     
-    const user = users[0];
+    // For demo purposes, hardcoded credentials
+    // In production, use proper database authentication with bcrypt
+    const validCredentials = [
+      { username: 'admin', password: 'ppme2024', name: 'Administrator', role: 'Admin' },
+      { username: 'penningmeester', password: 'ppme2024', name: 'Penningmeester', role: 'Treasurer' }
+    ];
     
-    // For demo purposes, using simple password check
-    // In production, use bcrypt.compare()
-    if (password === 'ppme2024' && (username === 'admin' || username === 'penningmeester')) {
+    const validUser = validCredentials.find(
+      cred => cred.username === username && cred.password === password
+    );
+    
+    if (validUser) {
       return Response.json({
         success: true,
         user: {
-          id: user.id,
-          username: user.username,
-          name: user.name,
-          role: user.role
+          id: `${validUser.username}_1`,
+          username: validUser.username,
+          name: validUser.name,
+          role: validUser.role
         }
       });
     }
     
     return Response.json({ error: 'Invalid credentials' }, { status: 401 });
   } catch (error) {
-    return Response.json({ error: 'Authentication failed' }, { status: 500 });
+    console.error('Auth error:', error);
+    return Response.json({ error: 'Authentication failed', details: error.message }, { status: 500 });
   }
 }
