@@ -10,14 +10,18 @@ const apiStore = create((set, get) => ({
   
   login: async (username, password) => {
     try {
+      console.log('Attempting login with:', username);
       const response = await fetch(`${API_BASE}/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
       
-      if (response.ok) {
-        const data = await response.json();
+      console.log('Auth response status:', response.status);
+      const data = await response.json();
+      console.log('Auth response data:', data);
+      
+      if (response.ok && data.success) {
         set({ 
           isAuthenticated: true, 
           adminUser: data.user 
