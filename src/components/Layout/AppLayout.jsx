@@ -6,7 +6,7 @@ export default function AppLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen" style={{ background: '#f4f1eb' }}>
+    <div className="flex min-h-screen" style={{ background: '#f4f1eb', minHeight: '100vh' }}>
       {/* Mobile overlay backdrop */}
       {mobileOpen && (
         <div
@@ -29,7 +29,7 @@ export default function AppLayout({ children }) {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar onMenuToggle={() => setMobileOpen(v => !v)} />
-        <main className="flex-1 overflow-auto p-4 lg:p-6">
+        <main className="flex-1 overflow-auto p-4 lg:p-6" style={{ minHeight: 'calc(100vh - 4rem)' }}>
           {children}
         </main>
       </div>

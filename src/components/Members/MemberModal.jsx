@@ -67,12 +67,25 @@ export default function MemberModal({ member, onClose, onSave }) {
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-start justify-center pt-8 p-4"
-      style={{ background: 'rgba(13,27,42,0.6)', backdropFilter: 'blur(4px)', overflowY: 'auto' }}
+      style={{ 
+        background: 'rgba(13,27,42,0.6)', 
+        backdropFilter: 'blur(4px)', 
+        overflowY: 'auto',
+        minHeight: '100vh',
+        height: '100vh'
+      }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
         className="w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden my-4"
-        style={{ background: 'white', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+        style={{ 
+          background: 'white', 
+          maxHeight: 'calc(100vh - 4rem)', 
+          display: 'flex', 
+          flexDirection: 'column',
+          marginTop: '2rem',
+          marginBottom: '2rem'
+        }}
       >
         {/* Header */}
         <div
