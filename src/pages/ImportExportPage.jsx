@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Download, Upload, FileText, AlertTriangle, CheckCircle, X } from 'lucide-react';
-import useStore from '../store/useStore';
+import apiStore from '../store/useStore';
 import { MONTHS } from '../utils/mockData';
 
 function Section({ title, sub, icon: Icon, children }) {
@@ -24,9 +24,9 @@ function Section({ title, sub, icon: Icon, children }) {
 }
 
 export default function ImportExportPage() {
-  const members  = useStore(s => s.members);
-  const payments = useStore(s => s.payments);
-  const addMember = useStore(s => s.addMember);
+  const members  = apiStore(s => s.members);
+  const payments = apiStore(s => s.payments);
+  const addMember = apiStore(s => s.addMember);
 
   const now = new Date();
   const currentMonth = now.getMonth() + 1;

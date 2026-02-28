@@ -1,4 +1,4 @@
-import useStore from '../../store/useStore';
+import apiStore from '../../store/apiStore';
 import {
   LayoutDashboard, Users, CreditCard, FileUp, Settings,
   ChevronLeft, ChevronRight, LogOut
@@ -13,7 +13,7 @@ const navItems = [
 ];
 
 export default function Sidebar({ onClose }) {
-  const { sidebarOpen, toggleSidebar, currentPage, setCurrentPage, logout, adminUser } = useStore();
+  const { sidebarOpen, toggleSidebar, currentPage, setCurrentPage, logout, adminUser } = apiStore();
 
   const handleNav = (id) => {
     setCurrentPage(id);

@@ -4,7 +4,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 import { Users, Euro, AlertTriangle, TrendingUp, UserPlus, CheckCircle } from 'lucide-react';
-import useStore from '../store/useStore';
+import apiStore from '../store/useStore';
 import { MONTHS } from '../utils/mockData';
 
 function StatCard({ icon: Icon, label, value, sub, accent, trend }) {
@@ -59,9 +59,9 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function DashboardPage() {
-  const members = useStore(s => s.members);
-  const payments = useStore(s => s.payments);
-  const setCurrentPage = useStore(s => s.setCurrentPage);
+  const members = apiStore(s => s.members);
+  const payments = apiStore(s => s.payments);
+  const setCurrentPage = apiStore(s => s.setCurrentPage);
 
   const now = new Date();
   const currentMonth = now.getMonth() + 1;

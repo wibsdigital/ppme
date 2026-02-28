@@ -1,22 +1,25 @@
 import { useState } from 'react';
-import useStore from '../store/useStore';
+import apiStore from '../store/apiStore';
 
 export default function LoginPage() {
-  const login = useStore(s => s.login);
+  const login = apiStore(s => s.login);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setTimeout(() => {
-      const ok = login(username, password);
+    try {
+      const ok = await login(username, password);
       if (!ok) setError('Ongeldig gebruikersnaam of wachtwoord.');
+    } catch (error) {
+      setError('Inloggen mislukt. Probeer het opnieuw.');
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   return (

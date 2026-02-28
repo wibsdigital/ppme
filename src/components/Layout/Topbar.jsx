@@ -1,5 +1,5 @@
 import { Bell, Search, Menu } from 'lucide-react';
-import useStore from '../../store/useStore';
+import apiStore from '../../store/useStore';
 
 const PAGE_TITLES = {
   dashboard:    { title: 'Dashboard',     sub: 'Overzicht van leden en betalingen' },
@@ -10,7 +10,7 @@ const PAGE_TITLES = {
 };
 
 export default function Topbar({ onMenuToggle }) {
-  const { currentPage, adminUser } = useStore();
+  const { currentPage, adminUser } = apiStore();
   const page = PAGE_TITLES[currentPage] || PAGE_TITLES.dashboard;
 
   return (

@@ -1,6 +1,6 @@
 import { useState, useMemo, Fragment } from 'react';
 import { CheckCircle, Euro, AlertTriangle, Users, ChevronDown, ChevronUp } from 'lucide-react';
-import useStore from '../store/useStore';
+import apiStore from '../store/useStore';
 import { MONTHS } from '../utils/mockData';
 import PaymentModal from '../components/Payments/PaymentModal';
 
@@ -26,12 +26,12 @@ function SummaryCard({ icon: Icon, label, value, sub, accent }) {
 }
 
 export default function PaymentsPage() {
-  const members  = useStore(s => s.members);
-  const payments = useStore(s => s.payments);
-  const updatePayment = useStore(s => s.updatePayment);
-  const markAsPaid    = useStore(s => s.markAsPaid);
-  const bulkMarkPaid  = useStore(s => s.bulkMarkPaid);
-  const addPayment    = useStore(s => s.addPayment);
+  const members  = apiStore(s => s.members);
+  const payments = apiStore(s => s.payments);
+  const updatePayment = apiStore(s => s.updatePayment);
+  const markAsPaid    = apiStore(s => s.markAsPaid);
+  const bulkMarkPaid  = apiStore(s => s.bulkMarkPaid);
+  const addPayment    = apiStore(s => s.addPayment);
 
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1);

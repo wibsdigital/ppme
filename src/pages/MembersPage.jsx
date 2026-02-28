@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Search, Plus, Pencil, Trash2, ChevronUp, ChevronDown, UserCheck, UserX } from 'lucide-react';
-import useStore from '../store/useStore';
+import apiStore from '../store/useStore';
 import { MONTHS } from '../utils/mockData';
 import MemberModal from '../components/Members/MemberModal';
 import DeleteConfirmModal from '../components/Members/DeleteConfirmModal';
@@ -35,11 +35,11 @@ function PaymentStatusBadge({ status }) {
 }
 
 export default function MembersPage() {
-  const members  = useStore(s => s.members);
-  const payments = useStore(s => s.payments);
-  const addMember    = useStore(s => s.addMember);
-  const updateMember = useStore(s => s.updateMember);
-  const deleteMember = useStore(s => s.deleteMember);
+  const members  = apiStore(s => s.members);
+  const payments = apiStore(s => s.payments);
+  const addMember    = apiStore(s => s.addMember);
+  const updateMember = apiStore(s => s.updateMember);
+  const deleteMember = apiStore(s => s.deleteMember);
 
   const now = new Date();
   const currentMonth = now.getMonth() + 1;

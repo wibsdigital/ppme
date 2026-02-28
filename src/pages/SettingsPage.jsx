@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Save, Shield, Building, Euro, User } from 'lucide-react';
-import useStore from '../store/useStore';
+import apiStore from '../store/useStore';
 
 function SettingSection({ icon: Icon, title, children }) {
   return (
@@ -35,10 +35,10 @@ function Field({ label, sub, children }) {
 }
 
 export default function SettingsPage() {
-  const settings = useStore(s => s.settings);
-  const updateSettings = useStore(s => s.updateSettings);
-  const adminUser = useStore(s => s.adminUser);
-  const logout = useStore(s => s.logout);
+  const settings = apiStore(s => s.settings);
+  const updateSettings = apiStore(s => s.updateSettings);
+  const adminUser = apiStore(s => s.adminUser);
+  const logout = apiStore(s => s.logout);
 
   const [form, setForm] = useState({ ...settings });
   const [saved, setSaved] = useState(false);

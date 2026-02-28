@@ -1,4 +1,5 @@
-import useStore from './store/useStore';
+import { useEffect } from 'react';
+import apiStore from './store/apiStore';
 import AppLayout from './components/Layout/AppLayout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
@@ -16,8 +17,18 @@ const PAGES = {
 };
 
 export default function App() {
-  const isAuthenticated = useStore(s => s.isAuthenticated);
-  const currentPage     = useStore(s => s.currentPage);
+  const isAuthenticated = apiStore(s => s.isAuthenticated);
+  const currentPage     = apiStore(s => s.currentPage);
+  const fetchMembers    = apiStore(s => s.fetchMembers);
+  const fetchPayments   = apiStore(s => s.fetchPayments);
+
+  // Fetch data when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchMembers();
+      fetchPayments();
+    }
+  }, [isAuthenticated, fetchMembers, fetchPayments]);
 
   if (!isAuthenticated) return <LoginPage />;
 
