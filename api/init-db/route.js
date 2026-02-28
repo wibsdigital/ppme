@@ -1,23 +1,74 @@
 import sql from '../../../api/db.js';
-import fs from 'fs';
-import path from 'path';
 
 export async function POST() {
   try {
-    // Read and execute the schema
-    const schemaPath = path.join(process.cwd(), 'api', 'schema.sql');
-    const schema = fs.readFileSync(schemaPath, 'utf8');
+    console.log('Starting database initialization...');
     
-    // Split schema into individual statements
-    const statements = schema
-      .split(';')
-      .map(stmt => stmt.trim())
-      .filter(stmt => stmt.length > 0);
+    // Test database connection first
+    const testResult = await sql`SELECT NOW()`;
+    console.log('Database connected:', testResult);
     
-    // Execute each statement
-    for (const statement of statements) {
-      await sql`${statement}`;
-    }
+    // Create tables one by one
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id VARCHAR(255) PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        role VARCHAR(50) DEFAULT 'Admin',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    
+    await sql`
+      CREATE TABLE IF NOT EXISTS settings (
+        id VARCHAR(255) PRIMARY KEY DEFAULT 'default',
+        organization_name VARCHAR(255) DEFAULT 'PPME Al Ikhlash Amsterdam',
+        contribution_married DECIMAL(10,2) DEFAULT 20.00,
+        contribution_single DECIMAL(10,2) DEFAULT 10.00,
+        currency VARCHAR(10) DEFAULT 'EUR',
+        default_payment_method VARCHAR(100) DEFAULT 'Bank Transfer',
+        language VARCHAR(10) DEFAULT 'nl',
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    
+    await sql`
+      CREATE TABLE IF NOT EXISTS members (
+        id VARCHAR(255) PRIMARY KEY,
+        naam VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE,
+        telefoon VARCHAR(50),
+        adres TEXT,
+        burgerlijke_staat VARCHAR(50),
+        contributietarief DECIMAL(10,2) DEFAULT 10.00,
+        betaal_methode VARCHAR(50) DEFAULT 'Bank Transfer',
+        registratie_datum DATE DEFAULT CURRENT_DATE,
+        status VARCHAR(50) DEFAULT 'Active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+    
+    await sql`
+      CREATE TABLE IF NOT EXISTS payments (
+        id VARCHAR(255) PRIMARY KEY,
+        member_id VARCHAR(255) REFERENCES members(id) ON DELETE CASCADE,
+        month INTEGER NOT NULL,
+        year INTEGER NOT NULL,
+        amount_due DECIMAL(10,2) NOT NULL,
+        amount_paid DECIMAL(10,2) DEFAULT 0.00,
+        payment_date DATE,
+        payment_method VARCHAR(100),
+        reference_note TEXT,
+        status VARCHAR(50) DEFAULT 'Unpaid',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(member_id, month, year)
+      )
+    `;
+    
+    console.log('Tables created successfully');
     
     // Add default admin users
     await sql`
@@ -27,6 +78,8 @@ export async function POST() {
         ('treasurer_1', 'penningmeester', 'ppme2024', 'Penningmeester', 'Treasurer')
       ON CONFLICT (username) DO NOTHING
     `;
+    
+    console.log('Admin users added');
     
     // Add default settings
     await sql`
@@ -41,16 +94,20 @@ export async function POST() {
         language = EXCLUDED.language
     `;
     
+    console.log('Settings added');
+    
     return Response.json({ 
       success: true, 
-      message: 'Database initialized successfully' 
+      message: 'Database initialized successfully',
+      timestamp: new Date().toISOString()
     });
     
   } catch (error) {
     console.error('Database initialization error:', error);
     return Response.json({ 
       error: 'Failed to initialize database', 
-      details: error.message 
+      details: error.message,
+      timestamp: new Date().toISOString()
     }, { status: 500 });
   }
 }
