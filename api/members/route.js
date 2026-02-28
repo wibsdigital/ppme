@@ -17,15 +17,18 @@ export async function POST(request) {
     const memberData = await request.json();
     const id = `member_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
+    // Combine name fields
+    const fullName = `${memberData.voornamen || ''} ${memberData.tussenvoegsel || ''} ${memberData.achternaam || ''}`.trim();
+    
     const member = await sql`
       INSERT INTO members (
         id, naam, email, telefoon, adres, burgerlijke_staat,
         contributietarief, betaal_methode, registratie_datum, status
       ) VALUES (
         ${id}, 
-        ${memberData.naam}, 
+        ${fullName}, 
         ${memberData.email}, 
-        ${memberData.telefoon}, 
+        ${memberData.telefoonnummer}, 
         ${memberData.adres}, 
         ${memberData.burgerlijke_staat},
         ${memberData.contributietarief}, 
@@ -38,6 +41,7 @@ export async function POST(request) {
     
     return Response.json(member[0]);
   } catch (error) {
-    return Response.json({ error: 'Failed to create member' }, { status: 500 });
+    console.error('Member creation error:', error);
+    return Response.json({ error: 'Failed to create member', details: error.message }, { status: 500 });
   }
 }
