@@ -3,6 +3,7 @@ import apiStore from './store/apiStore';
 import AppLayout from './components/Layout/AppLayout';
 import LoginPage from './pages/LoginPage';
 import TestAuthPage from './pages/TestAuthPage';
+import InitDbPage from './pages/InitDbPage';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import PaymentsPage from './pages/PaymentsPage';
@@ -10,6 +11,7 @@ import ImportExportPage from './pages/ImportExportPage';
 import SettingsPage from './pages/SettingsPage';
 
 const PAGES = {
+  initdb:       InitDbPage,
   testauth:      TestAuthPage,
   dashboard:    DashboardPage,
   members:      MembersPage,
