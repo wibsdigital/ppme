@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Search, Plus, Pencil, Trash2, ChevronUp, ChevronDown, UserCheck, UserX } from 'lucide-react';
-import apiStore from '../store/useStore';
+import apiStore from '../store/apiStore';
 import { MONTHS } from '../utils/mockData';
 import MemberModal from '../components/Members/MemberModal';
 import DeleteConfirmModal from '../components/Members/DeleteConfirmModal';

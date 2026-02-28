@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Save, Shield, Building, Euro, User } from 'lucide-react';
-import apiStore from '../store/useStore';
+import apiStore from '../store/apiStore';
 
 function SettingSection({ icon: Icon, title, children }) {
   return (

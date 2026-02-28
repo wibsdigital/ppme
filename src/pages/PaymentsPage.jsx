@@ -1,6 +1,6 @@
 import { useState, useMemo, Fragment } from 'react';
 import { CheckCircle, Euro, AlertTriangle, Users, ChevronDown, ChevronUp } from 'lucide-react';
-import apiStore from '../store/useStore';
+import apiStore from '../store/apiStore';
 import { MONTHS } from '../utils/mockData';
 import PaymentModal from '../components/Payments/PaymentModal';
 

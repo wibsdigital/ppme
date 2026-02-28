@@ -4,6 +4,7 @@ import AppLayout from './components/Layout/AppLayout';
 import LoginPage from './pages/LoginPage';
 import TestAuthPage from './pages/TestAuthPage';
 import InitDbPage from './pages/InitDbPage';
+import DatabaseTestPage from './pages/DatabaseTestPage';
 import DashboardPage from './pages/DashboardPage';
 import MembersPage from './pages/MembersPage';
 import PaymentsPage from './pages/PaymentsPage';
@@ -12,6 +13,7 @@ import SettingsPage from './pages/SettingsPage';
 
 const PAGES = {
   initdb:       InitDbPage,
+  testdb:       DatabaseTestPage,
   testauth:      TestAuthPage,
   dashboard:    DashboardPage,
   members:      MembersPage,

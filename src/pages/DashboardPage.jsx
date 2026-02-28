@@ -4,7 +4,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 import { Users, Euro, AlertTriangle, TrendingUp, UserPlus, CheckCircle } from 'lucide-react';
-import apiStore from '../store/useStore';
+import apiStore from '../store/apiStore';
 import { MONTHS } from '../utils/mockData';
 
 function StatCard({ icon: Icon, label, value, sub, accent, trend }) {
